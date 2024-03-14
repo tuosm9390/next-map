@@ -7,7 +7,7 @@
 }
 
 .navbar__logo {
-  @apply text-blue-800 text-lg font-semibold cursor-pointer px-[18px] py-0;
+  @apply text-blue-800 text-lg font-semibold cursor-pointer px-[18px] py-0 italic;
 }
 
 .navbar__list {
