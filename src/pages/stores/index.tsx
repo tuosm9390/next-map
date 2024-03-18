@@ -1,29 +1,38 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { StoreType } from "@/interface";
-import Image from "next/image";
 
 import { useInfiniteQuery } from "react-query";
 
 import Loading from "@/components/Loading";
 import axios from "axios";
-import { useRouter } from "next/router";
 
+import { searchState } from "@/atom";
 import Loader from "@/components/Loader";
+import SearchFilter from "@/components/SearchFilter";
+import StoreList from "@/components/StoreList";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { useRouter } from "next/router";
+import { useRecoilValue } from "recoil";
 
 export default function StoreListPage() {
   const router = useRouter();
-  const { page = "1" }: any = router.query;
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = !!pageRef?.isIntersecting;
+  const searchValue = useRecoilValue(searchState);
+
+  const searchParams = {
+    q: searchValue?.q,
+    district: searchValue?.district,
+  };
 
   const fetchStores = async ({ pageParam = 1 }) => {
     const { data } = await axios("/api/stores?page=" + pageParam, {
       params: {
         limit: 10,
         page: pageParam,
+        ...searchParams,
       },
     });
 
@@ -38,7 +47,7 @@ export default function StoreListPage() {
     hasNextPage,
     isError,
     isLoading,
-  } = useInfiniteQuery("stores", fetchStores, {
+  } = useInfiniteQuery(["stores", searchParams], fetchStores, {
     getNextPageParam: (lastPage: any) =>
       lastPage.data?.length > 0 ? lastPage.page + 1 : undefined,
   });
@@ -72,6 +81,8 @@ export default function StoreListPage() {
 
   return (
     <div className="px-4 md:max-w-4xl mx-auto py-8">
+      {/* search filter */}
+      <SearchFilter />
       <ul
         role="list"
         className="divide-y divide-gray-100"
@@ -81,41 +92,12 @@ export default function StoreListPage() {
         ) : (
           stores?.pages?.map((page, index) => (
             <React.Fragment key={index}>
-              {page.data.map((store: StoreType, i) => (
-                <li
-                  className="flex justify-between gap-x-6 py-5"
+              {page.data.map((store: StoreType, i: any) => (
+                <StoreList
+                  store={store}
+                  i={i}
                   key={i}
-                >
-                  <div className="flex gap-x-4">
-                    <Image
-                      src={
-                        store?.category
-                          ? `/images/markers/${store?.category}.png`
-                          : "/images/markers/default.png"
-                      }
-                      width={48}
-                      height={48}
-                      alt="아이콘 이미지"
-                    />
-                    <div>
-                      <div className="text-sm font-semibold leading-6 text-gray-900">
-                        {store?.name}
-                      </div>
-                      <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
-                        {store?.storeType}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    <div className="text-sm font-semibold leading-6 text-gray-900">
-                      {store?.address}
-                    </div>
-                    <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
-                      {store?.phone || "번호없음"} | {store?.foodCertifyName} |{" "}
-                      {store?.category}
-                    </div>
-                  </div>
-                </li>
+                />
               ))}
             </React.Fragment>
           ))

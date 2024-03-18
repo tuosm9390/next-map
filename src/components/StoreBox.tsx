@@ -1,5 +1,7 @@
+import { currentStoreState } from "@/atom";
 import { StoreType } from "@/interface";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import {
   AiOutlineCheck,
@@ -8,13 +10,14 @@ import {
   AiOutlinePhone,
 } from "react-icons/ai";
 import { HiOutlineMapPin } from "react-icons/hi2";
+import { useRecoilState } from "recoil";
+import Like from "./Like";
 
-interface StoreBoxProps {
-  store: StoreType | null;
-  setStore: Dispatch<SetStateAction<any>>;
-}
+// 선택한 가게 정보 표시
+export default function StoreBox() {
+  const router = useRouter();
+  const [store, setStore] = useRecoilState(currentStoreState);
 
-export default function StoreBox({ store, setStore }: StoreBoxProps) {
   return (
     <div className="fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20 rounded-lg shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white">
       {store && (
@@ -44,9 +47,12 @@ export default function StoreBox({ store, setStore }: StoreBoxProps) {
                 <AiOutlineClose />
               </button>
             </div>
-            <div className="mt-4 flex gap-2 items-center">
-              <HiOutlineMapPin />
-              {store?.address}
+            <div className="flex justify-between gap-4">
+              <div className="mt-4 flex gap-2 items-center col-span-3">
+                <HiOutlineMapPin />
+                {store?.address || "주소가 없습니다."}
+              </div>
+              <Like storeId={store.id} />
             </div>
             <div className="mt-2 flex gap-2 items-center">
               <AiOutlinePhone />
@@ -63,7 +69,7 @@ export default function StoreBox({ store, setStore }: StoreBoxProps) {
           </div>
           <button
             type="button"
-            onClick={() => window.alert("상세보기 작업중")}
+            onClick={() => router.push(`/stores/${store.id}`)}
             className="w-full bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 py-3 text-white font-semibold rounded-b-lg"
           >
             상세보기
