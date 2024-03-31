@@ -3,6 +3,7 @@ import { LikeApiResponse, LikeInterface } from "@/interface";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
+
 interface ResponseType {
   page?: string;
   limit?: string;

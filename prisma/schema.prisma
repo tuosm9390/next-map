@@ -6,9 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -20,10 +20,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
   likes         Like[]
+  comments      Comment[]
 }
 
 model Store {
-  id              Int     @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   phone           String? // tel_no
   address         String? // rdn_code_nm
   lat             String? // y_dnts
@@ -33,6 +34,7 @@ model Store {
   storeType       String? // cob_code_nm
   foodCertifyName String? // crtfc_gbn_nm
   likes           Like[]
+  comments        Comment[]
 }
 
 model Like {
@@ -40,6 +42,18 @@ model Like {
   createdAt DateTime @default(now())
   storeId   Int
   userId    Int
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, storeId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  storeId   Int
+  userId    Int
+  body      String
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 
+import Comments from "@/components/comments";
 import Like from "@/components/Like";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -158,14 +159,17 @@ export default function StorePage() {
         </div>
       </div>
       {isSuccess && (
-        <div className="overflow-hidden w-full mb-20 max-w-5xl mx-auto max-h-[600px]">
-          <Map
-            lat={store?.lat}
-            lng={store?.lng}
-            zoom={1}
-          />
-          <Marker store={store} />
-        </div>
+        <>
+          <div className="overflow-hidden w-full mb-20 max-w-5xl mx-auto max-h-[600px]">
+            <Map
+              lat={store?.lat}
+              lng={store?.lng}
+              zoom={1}
+            />
+            <Marker store={store} />
+          </div>
+          <Comments storeId={store.id} />
+        </>
       )}
     </>
   );
