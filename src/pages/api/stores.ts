@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 
-interface ResponseType {
+interface Responsetype {
   page?: string;
   limit?: string;
   q?: string;
@@ -18,12 +18,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType | null>
 ) {
-  // 페이지 기본값 설정
-  const { page = "", limit = "", q, district, id }: ResponseType = req.query;
+  const { page = "", limit = "", q, district, id }: Responsetype = req.query;
   const session = await getServerSession(req, res, authOptions);
 
   if (req.method === "POST") {
-    // 데이터 생성 처리
+    // 데이터 생성을 처리한다
     const formData = req.body;
     const headers = {
       Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
@@ -42,7 +41,7 @@ export default async function handler(
 
     return res.status(200).json(result);
   } else if (req.method === "PUT") {
-    // 데이터 수정 처리
+    // 데이터 수정을 처리한다
     const formData = req.body;
     const headers = {
       Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
@@ -62,7 +61,7 @@ export default async function handler(
 
     return res.status(200).json(result);
   } else if (req.method === "DELETE") {
-    // 데이터 삭제 처리
+    // 데이터 삭제
     if (id) {
       const result = await prisma.store.delete({
         where: {
@@ -72,27 +71,21 @@ export default async function handler(
 
       return res.status(200).json(result);
     }
-
-    // 잘못된 접근일 경우
     return res.status(500).json(null);
   } else {
     // GET 요청 처리
     if (page) {
       const count = await prisma.store.count();
-
       const skipPage = parseInt(page) - 1;
-
       const stores = await prisma.store.findMany({
         orderBy: { id: "asc" },
         where: {
           name: q ? { contains: q } : {},
           address: district ? { contains: district } : {},
         },
-        take: 10,
+        take: parseInt(limit),
         skip: skipPage * 10,
       });
-
-      // totalPage, data, page, totalCount
 
       res.status(200).json({
         page: parseInt(page),
@@ -115,9 +108,7 @@ export default async function handler(
         },
       });
 
-      // Invalid `prisma.store.findMany()` invocation: 에러 처리
-      // type 수정
-      if (stores) return res.status(200).json(id ? stores[0] : stores);
+      return res.status(200).json(id ? stores[0] : stores);
     }
   }
 }
