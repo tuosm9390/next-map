@@ -52,7 +52,7 @@ export default function Map({ lat, lng, zoom }: MapProps) {
       />
       <div
         id="map"
-        className="w-full h-screen"
+        className={`w-full ${lat ? "h-[650px]" : "h-screen"} `}
       ></div>
     </>
   );

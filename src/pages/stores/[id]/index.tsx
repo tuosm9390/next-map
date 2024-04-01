@@ -5,12 +5,12 @@ import { StoreType } from "@/interface";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
+import { toast } from "react-toastify";
 
-import Comments from "@/components/comments";
 import Like from "@/components/Like";
+import Comments from "@/components/comments";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
 export default function StorePage() {
   const router = useRouter();
@@ -27,10 +27,30 @@ export default function StorePage() {
     isFetching,
     isSuccess,
     isError,
-  } = useQuery(`store-${id}`, fetchStore, {
+  } = useQuery<StoreType>(`store-${id}`, fetchStore, {
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
+
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 가게를 삭제하시겠습니까?");
+
+    if (confirm && store) {
+      try {
+        const result = await axios.delete(`/api/stores?id=${store?.id}`);
+
+        if (result.status === 200) {
+          toast.success("가게를 삭제했습니다.");
+          router.replace("/");
+        } else {
+          toast.error("다시 시도해주세요.");
+        }
+      } catch (e) {
+        console.log(e);
+        toast.error("다시 시도해주세요.");
+      }
+    }
+  };
 
   if (isError) {
     return (
@@ -44,26 +64,6 @@ export default function StorePage() {
     return <Loader className="mt-[20%]" />;
   }
 
-  const handleDelete = async () => {
-    const confirm = window.confirm("해당 가게를 삭제하시겠습니까?");
-
-    if (confirm && store) {
-      try {
-        const result = await axios.delete(`/api/stores?id=${store?.id}`);
-
-        if (result.status === 200) {
-          toast.success("가게를 삭제했습니다.");
-          router.replace("/");
-        } else {
-          toast.error("다시 시도해주세요");
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("다시 시도해주세요");
-      }
-    }
-  };
-
   return (
     <>
       <div className="max-w-5xl mx-auto px-4 py-8">
@@ -76,19 +76,18 @@ export default function StorePage() {
               {store?.address}
             </p>
           </div>
-
           {status === "authenticated" && store && (
             <div className="flex items-center gap-4 px-4 py-3">
-              <Like storeId={store.id} />
+              {<Like storeId={store.id} />}
               <Link
-                href={`/stores/${store?.id}/edit`}
                 className="underline hover:text-gray-400 text-sm"
+                href={`/stores/${store?.id}/edit`}
               >
                 수정
               </Link>
               <button
                 type="button"
-                onClick={() => handleDelete()}
+                onClick={handleDelete}
                 className="underline hover:text-gray-400 text-sm"
               >
                 삭제
