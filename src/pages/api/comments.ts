@@ -1,6 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authoptions";
 import prisma from "@/db";
 import { CommentApiResponse, CommentInterface } from "@/interface";
+import { authOptions } from "@/lib/authoptions";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
