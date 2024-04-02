@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+"use client";
+
+import React, { useCallback, useEffect, useRef } from "react";
 
 import { StoreType } from "@/interface";
 
@@ -12,7 +14,7 @@ import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
 import StoreList from "@/components/StoreList";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 export default function StoreListPage() {

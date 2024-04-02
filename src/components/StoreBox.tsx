@@ -1,8 +1,8 @@
+"use client";
+
 import { currentStoreState } from "@/atom";
-import { StoreType } from "@/interface";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/navigation";
 import {
   AiOutlineCheck,
   AiOutlineClose,
@@ -13,11 +13,9 @@ import { HiOutlineMapPin } from "react-icons/hi2";
 import { useRecoilState } from "recoil";
 import Like from "./Like";
 
-// 선택한 가게 정보 표시
 export default function StoreBox() {
   const router = useRouter();
   const [store, setStore] = useRecoilState(currentStoreState);
-
   return (
     <div className="fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20 rounded-lg shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white">
       {store && (

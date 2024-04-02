@@ -1,16 +1,16 @@
+"use client";
+
 import { AiOutlineGoogle } from "react-icons/ai";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  console.log(session);
 
   useEffect(() => {
     if (status === "authenticated") {
