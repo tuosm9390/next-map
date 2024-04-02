@@ -14,7 +14,12 @@ import Comments from "@/components/comments";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-export default function StorePage({ params }: { params: { id: string } }) {
+interface ParamsProps {
+  params: { id: string };
+  searchParams: { page: string };
+}
+
+export default function StorePage({ params, searchParams }: ParamsProps) {
   const router = useRouter();
   const id = params.id;
   const { status } = useSession();
@@ -169,7 +174,10 @@ export default function StorePage({ params }: { params: { id: string } }) {
             />
             <Marker store={store} />
           </div>
-          <Comments storeId={store.id} />
+          <Comments
+            storeId={store.id}
+            page={searchParams.page}
+          />
         </>
       )}
     </>
