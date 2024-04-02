@@ -1,12 +1,12 @@
 import prisma from "@/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { AuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt" as const,
     maxAge: 60 * 60 * 24, // 24시간 유지
