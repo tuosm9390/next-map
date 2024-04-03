@@ -2,7 +2,7 @@ import prisma from "@/db";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-import { authOptions } from "@/lib/authoptions";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
 export async function GET(req: Request) {
