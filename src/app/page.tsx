@@ -20,6 +20,7 @@ export default async function Home() {
   );
 }
 
+// 동적 페이지 설정
 async function getData() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {

@@ -8,7 +8,7 @@ import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "react-query";
 
-export default function Example({
+export default function Mypage({
   searchParams,
 }: {
   searchParams: { page: string };
@@ -29,7 +29,6 @@ export default function Example({
   );
 
   const { data: session } = useSession();
-
   return (
     <div className="md:max-w-5xl mx-auto px-4 py-8">
       <div className="px-4 sm:px-0">

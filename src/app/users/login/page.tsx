@@ -1,15 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { AiOutlineGoogle } from "react-icons/ai";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
 
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function LoginPage() {
     <div className="flex flex-col justify-center px-6 lg:px-8 h-[60vh]">
       <div className="mx-auto w-full max-w-sm">
         <div className="text-blue-800 text-center text-2xl font-semibold italic">
-          NextMap
+          Nextmap
         </div>
         <div className="text-center mt-6 text-2xl font-bold text-gray-600">
           SNS 계정으로 로그인해주세요
@@ -36,7 +37,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="text-white flex gap-2 bg-[#4285f4] hover:bg-[4285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
+            className="text-white flex gap-2 bg-[#4285F4] hover:bg-[#4285F4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
           >
             <AiOutlineGoogle className="w-6 h-6" />
             Sign in with Google

@@ -53,7 +53,6 @@ export default function LikesPage({
             />
           ))
         )}
-        {/* !!! 데이터 존재 여부 확인 */}
         {isSuccess && !!!likes.data.length && (
           <div className="p-4 border border-gray-200 rounded-md text-sm text-gray-400">
             찜한 가게가 없습니다.
