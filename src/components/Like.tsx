@@ -1,8 +1,10 @@
 import { StoreType } from "@/interface";
+import { event } from "@/lib/gtag";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { useQuery } from "react-query";
+
+import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 
 interface LikeProps {
@@ -17,7 +19,7 @@ export default function Like({ storeId }: LikeProps) {
     return data as StoreType;
   };
 
-  const { data: store, refetch } = useQuery(
+  const { data: store, refetch } = useQuery<StoreType>(
     `like-store-${storeId}`,
     fetchStore,
     {
@@ -27,7 +29,7 @@ export default function Like({ storeId }: LikeProps) {
   );
 
   const toggleLike = async () => {
-    // 찜/찜 취소 로직
+    // 찜하기/찜취소 로직
     if (session?.user && store) {
       try {
         const like = await axios.post("/api/likes", {
@@ -39,12 +41,26 @@ export default function Like({ storeId }: LikeProps) {
         } else {
           toast.warn("찜을 취소했습니다.");
         }
+
+        event({
+          action: "click_like",
+          category: "like",
+          label: like.status === 201 ? "create_like" : "delete_like",
+          value: storeId,
+        });
+
         refetch();
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
+        console.log(e);
       }
-    } else if (status == "unauthenticated") {
+    } else if (status === "unauthenticated") {
       toast.warn("로그인 후 이용해주세요.");
+      event({
+        action: "click_like",
+        category: "like",
+        label: "need_login_like",
+        value: storeId,
+      });
     }
   };
 
@@ -53,7 +69,7 @@ export default function Like({ storeId }: LikeProps) {
       type="button"
       onClick={toggleLike}
     >
-      {/* 로그인한 사용자가 좋아요 눌렀을 경우 */}
+      {/* 로그인된 사용자가 좋아요를 눌렀다면? */}
       {status === "authenticated" && store?.likes?.length ? (
         <AiFillHeart className="hover:text-red-600 focus:text-red-600 text-red-500" />
       ) : (
