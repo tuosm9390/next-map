@@ -315,11 +315,6 @@
   resolved "https://registry.npmjs.org/@types/cookie/-/cookie-0.6.0.tgz"
   integrity sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==
 
-"@types/gtag.js@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.14.tgz#e19f5c310400907ed6f3cbbf00bb5e9f2b6f12f6"
-  integrity sha512-NcR9rf3B93ie5T086NIpXGTtoIJeOeQ14+IBIBwfNBztb175e/0gONc60ywUU4+f9dwctgz9L3I4h5Gs/hl31g==
-
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
@@ -2509,10 +2504,10 @@ react-dom@18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-hook-form@^7.51.0:
-  version "7.51.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.0.tgz#757ae71b37c26e00590bd3788508287dcc5ecdaf"
-  integrity sha512-BggOy5j58RdhdMzzRUHGOYhSz1oeylFAv6jUSG86OvCIvlAvS7KvnRY7yoAf2pfEiPN7BesnR0xx73nEk3qIiw==
+react-hook-form@^7.46.1:
+  version "7.51.2"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.2.tgz#79f7f72ee217c5114ff831012d1a7ec344096e7f"
+  integrity sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==
 
 react-icons@^4.11.0:
   version "4.12.0"
